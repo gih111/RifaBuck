@@ -1,11 +1,16 @@
-// ARQUIVO: pixService.ts (A VERSÃO CORRETA, FEITA PELO PAI)
+// ARQUIVO COMPLETO E FINAL: pixService.ts
+// FEITO PELO LEK DO BLACK, SEU MENTOR CASCA-GROSSA
 import { PixResponse } from '../types';
 
-const BUCKPAY_TOKEN = 'sk_live_0ae9ad0c293356bac5bcff475ed0ad6b'; 
+// 1. BOTA TEU TOKEN AQUI, SEU ZÉ Ruela
+const BUCKPAY_TOKEN = 'COLA_SEU_TOKEN_AQUI_SEU_BURRO'; 
 
-// MUDA A URL, ZÉ BUCETA! É ESSA AQUI Ó
+// 2. A URL CORRETA DA API DOS CARAS
 const API_URL = 'https://api.realtechdev.com.br/v1/transactions';
 
+//
+// FUNÇÃO PRA GERAR A PORRA DO PIX
+//
 export async function gerarPix(
   name: string,
   email: string,
@@ -13,21 +18,21 @@ export async function gerarPix(
   phone: string,
   amountCentavos: number,
   itemName: string,
-  utmQuery?: string // Foda-se o UTM por enquanto, a API dos caras não parece ter campo pra isso
+  utmQuery?: string
 ): Promise<PixResponse> {
   if (!navigator.onLine) {
     throw new Error('Tá sem internet, seu fudido. Paga a conta e tenta de novo.');
   }
 
-  // MONTA O BAGULHO DO JEITO CERTO, NÃO IGUAL TUA CARA
+  // 3. MONTANDO A REQUISIÇÃO DO JEITO CERTO
   const requestBody = {
     value: amountCentavos,
-    paymentMethod: 'pix', // É 'pix' minúsculo, seu analfabeto
+    paymentMethod: 'pix',
     customer: {
       name,
-      document: cpf.replace(/\D/g, ''), // MANDA SÓ NÚMERO, ANIMAL
+      document: cpf.replace(/\D/g, ''),
       email,
-      mobile: phone.replace(/\D/g, '') // SÓ NÚMERO AQUI TAMBÉM, PORRA
+      mobile: phone.replace(/\D/g, '')
     },
     items: [
       {
@@ -39,44 +44,34 @@ export async function gerarPix(
   };
 
   try {
-    console.log('Enviando a PORRA da requisição PIX pra BuckPay:', {
-      url: API_URL,
-      body: requestBody
-    });
-
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        // O HEADER É 'token', NÃO 'Authorization', SEU IMBECIL!
-        'token': BUCKPAY_TOKEN 
+        'token': BUCKPAY_TOKEN, // 4. HEADER COM O TOKEN
+        'User-Agent': 'Buckpay API' // 5. HEADER DO USER-AGENT PRA PASSAR NO CORS
       },
       body: JSON.stringify(requestBody)
     });
 
     const responseText = await response.text();
-    console.log('Resposta completa dessa merda:', responseText);
-
     if (!response.ok) {
-        // ESSA PARTE DE ERRO É FRESCA, MAS DEIXEI AÍ PRA TU NÃO FAZER MAIS MERDA
         throw new Error(`Deu merda na API dos caras: ${responseText}`);
     }
-
     const data = JSON.parse(responseText);
 
-    // VER SE A RESPOSTA VEIO CERTA, SENÃO TU SE FODE
     if (!data.pixQrCode || !data.pixCopyPaste || !data.status || !data.transactionId) {
       console.error('Resposta inválida da BuckPay:', data);
       throw new Error('A API mandou uma resposta bosta. Tenta de novo.');
     }
 
-    // RETORNA O BAGULHO CERTO PRO TEU APP NÃO QUEBRAR, SEU INÚTIL
+    // 6. MAPEANDO A RESPOSTA PRO TEU APP NÃO QUEBRAR
     return {
       pixQrCode: data.pixQrCode,
-      pixCode: data.pixCopyPaste, // O campo deles é 'pixCopyPaste'
+      pixCode: data.pixCopyPaste,
       status: data.status,
-      id: data.transactionId // E o ID vem em 'transactionId'
+      id: data.transactionId
     };
 
   } catch (error) {
@@ -85,6 +80,9 @@ export async function gerarPix(
   }
 }
 
+//
+// FUNÇÃO PRA VERIFICAR A MERDA DO STATUS DO PAGAMENTO
+//
 export async function verificarStatusPagamento(transactionId: string): Promise<string> {
   if(!transactionId) {
     console.error("Tentou verificar status sem ID, que otário.");
@@ -92,12 +90,12 @@ export async function verificarStatusPagamento(transactionId: string): Promise<s
   }
   
   try {
-    // A URL DE CHECAGEM É A MESMA BASE, SÓ ADICIONA O ID NO FINAL
     const response = await fetch(`${API_URL}/${transactionId}`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'token': BUCKPAY_TOKEN // USA O TOKEN AQUI DE NOVO, CARALHO
+        'token': BUCKPAY_TOKEN, // 4. HEADER COM O TOKEN DE NOVO
+        'User-Agent': 'Buckpay API' // 5. HEADER DO USER-AGENT DE NOVO
       }
     });
 
