@@ -3,7 +3,7 @@
 import { PixResponse } from '../types';
 
 // 1. BOTA TEU TOKEN AQUI, SEU ZÉ Ruela
-const BUCKPAY_TOKEN = 'COLA_SEU_TOKEN_AQUI_SEU_BURRO'; 
+const BUCKPAY_TOKEN = 'sk_live_0ae9ad0c293356bac5bcff475ed0ad6b'; 
 
 // 2. A URL CORRETA DA API DOS CARAS
 const API_URL = 'https://api.realtechdev.com.br/v1/transactions';
