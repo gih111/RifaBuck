@@ -49,8 +49,7 @@ export async function gerarPix(
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'token': BUCKPAY_TOKEN, // 4. HEADER COM O TOKEN
-        'User-Agent': 'Buckpay API' // 5. HEADER DO USER-AGENT PRA PASSAR NO CORS
+        'token': BUCKPAY_TOKEN // 4. HEADER COM O TOKEN
       },
       body: JSON.stringify(requestBody)
     });
@@ -94,8 +93,7 @@ export async function verificarStatusPagamento(transactionId: string): Promise<s
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'token': BUCKPAY_TOKEN, // 4. HEADER COM O TOKEN DE NOVO
-        'User-Agent': 'Buckpay API' // 5. HEADER DO USER-AGENT DE NOVO
+        'token': BUCKPAY_TOKEN // 4. HEADER COM O TOKEN DE NOVO
       }
     });
 
