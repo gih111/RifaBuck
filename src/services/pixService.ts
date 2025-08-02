@@ -4,8 +4,8 @@ import { PixResponse } from '../types';
 // Token da BuckPay
 const BUCKPAY_TOKEN = 'sk_live_0ae9ad0c293356bac5bcff475ed0ad6b'; 
 
-// URL correta da API conforme documentação
-const API_URL = 'https://api.realtechdev.com.br/v1/transactions';
+// URL usando proxy do Vite para evitar CORS em desenvolvimento
+const API_URL = '/api/v1/transactions';
 
 //
 // FUNÇÃO PARA GERAR PIX CONFORME DOCUMENTAÇÃO
@@ -101,7 +101,6 @@ export async function verificarStatusPagamento(transactionId: string): Promise<s
         'Accept': 'application/json',
         'token': BUCKPAY_TOKEN
       }
-    });
 
     if (!response.ok) {
       console.error(`Erro ao verificar status: ${response.status}`);
