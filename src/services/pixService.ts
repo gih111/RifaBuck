@@ -101,7 +101,7 @@ export async function verificarStatusPagamento(transactionId: string): Promise<s
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, token'
-      }
+      },
       mode: 'cors'
     });
 
