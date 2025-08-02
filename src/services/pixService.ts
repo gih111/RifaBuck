@@ -50,7 +50,7 @@ export async function gerarPix(
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'token': BUCKPAY_TOKEN // Header conforme documentação
-      }
+      },
       body: JSON.stringify(requestBody)
     });
 
