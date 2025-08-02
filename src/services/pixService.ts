@@ -101,6 +101,8 @@ export async function verificarStatusPagamento(transactionId: string): Promise<s
         'Accept': 'application/json',
         'token': BUCKPAY_TOKEN
       }
+    }
+    )
 
     if (!response.ok) {
       console.error(`Erro ao verificar status: ${response.status}`);
