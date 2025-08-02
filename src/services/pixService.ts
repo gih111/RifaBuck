@@ -49,7 +49,7 @@ export async function gerarPix(
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'token': BUCKPAY_TOKEN // Header conforme documentação
+        'Authorization': `Bearer ${BUCKPAY_TOKEN}`
       },
       body: JSON.stringify(requestBody)
     });
@@ -100,7 +100,7 @@ export async function verificarStatusPagamento(transactionId: string): Promise<s
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'token': BUCKPAY_TOKEN
+        'Authorization': `Bearer ${BUCKPAY_TOKEN}`
       }
     }
     )
