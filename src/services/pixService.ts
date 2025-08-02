@@ -4,8 +4,9 @@ import { PixResponse } from '../types';
 // Token da BuckPay
 const BUCKPAY_TOKEN = 'sk_live_0ae9ad0c293356bac5bcff475ed0ad6b'; 
 
-// URL usando proxy do Vite para evitar CORS em desenvolvimento
-const API_URL = '/api/v1/transactions';
+// URL base da API - usando proxy do Vite em desenvolvimento
+const API_BASE_URL = import.meta.env.DEV ? '/api' : 'https://api.realtechdev.com.br';
+const API_URL = `${API_BASE_URL}/v1/transactions`;
 
 //
 // FUNÇÃO PARA GERAR PIX CONFORME DOCUMENTAÇÃO
@@ -49,7 +50,6 @@ export async function gerarPix(
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'token': BUCKPAY_TOKEN // Header conforme documentação
-      },
       body: JSON.stringify(requestBody)
     });
 
@@ -101,7 +101,6 @@ export async function verificarStatusPagamento(transactionId: string): Promise<s
         'Accept': 'application/json',
         'token': BUCKPAY_TOKEN
       }
-    }
     )
 
     if (!response.ok) {
